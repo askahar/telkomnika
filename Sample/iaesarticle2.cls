@@ -1,5 +1,5 @@
 %%
-%% This is file 'iaesarticle3.cls',
+%% This is file 'iaesarticle2.cls',
 %% based on 'article.cls'.
 %% Original syntax is left as it is for further modification.
 %%
@@ -19,23 +19,40 @@
 %% 21/08/2012	imamul	modified 'article.cls' to 'iaesarticle.cls'
 %% 17/11/2012	imamul	modified 'iaesarticle.cls' to 'iaesarticle2.cls' (temp)
 %% 					edit font to times
-%% 03/04/2013	imamul	modified 'iaesarticle2.cls' to 'iaesarticle3.cls' (telkomnika)
-%% 17/01/2019	imamul	see comments
+%% 02/04/2013	imamul	modified 'iaesarticle2.cls' to 'iaesarticle3.cls' (telkomnika)
+
 
 %% Version and identification
 %% -----------------------------
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
-\ProvidesClass{iaesarticle3}
-              [2013/04/03 v0.3
+\ProvidesClass{iaesarticle2}
+              [2012/11/17 v0.2
                IAES Journal LaTeX document class]
 
+%\renewcommand{\normalsize}{%
+%   \fontsize{10}{12}\selectfont}
+%\setlength\textwidth {15.5cm}
+%\setlength\textheight {24.5cm}
+%\setlength\topmargin {2.5cm}
+%\setlength\oddsidemargin {2.5cm)
+%\setlength\evensidemargin {2.5cm}
+%\setlength\marginparwidth {.25in}
+%\setlength\headsep {.1875in}
+%\RequirePackage[left=1in,right=1in,top=1in,bottom=1in]{geometry}
 \setlength\parindent{1.27cm}
 
 % These three commands make up the entire times.sty package.
 % Arial font.
 \renewcommand{\sfdefault}{phv}
 \renewcommand{\rmdefault}{phv}
-\renewcommand{\ttdefault}{phv}
+%\renewcommand{\ttdefault}{pcr}
+
+%% Option handling
+%% -------------------
+%\DeclareOption*{%
+%    \PassOptionsToClass{\CurrentOption}
+%			     {article}}
+%\LoadClass[a4paper]{article}
 
 %% Internal definition and compability
 %% ----------------------------------------
@@ -130,42 +147,32 @@
 %% --------
 \def\journalname#1{\gdef\@journalname{#1}}
 \def\journalshortname#1{\gdef\@journalshortname{#1}}
-
-%\if@online
-%\def\issn#1{\gdef\@issn{e-ISSN: #1}}
-%\else
 \def\issn#1{\gdef\@issn{ISSN: #1}}
-%\fi
-
 \def\vol#1{\gdef\@vol{#1}}
 \def\no#1{\gdef\@no{#1}}
 \def\shorttitle#1{\gdef\@shorttitle{#1}}
-\def\revhistory#1{\gdef\@revhistory{#1}}
+\def\journalhomepage#1{\gdef\@journalhomepage{#1}}
 \def\months#1{\gdef\@months{#1}}
 \def\years#1{\gdef\@years{#1}}
-\def\DOI#1{\gdef\@DOI{DOI: #1}} %set DOI 17/01/2019
 
 %% Header and footer
 %% ----------------------
 \RequirePackage{fancyhdr}
 \fancypagestyle{firstpage}{%
 \fancyhf{} % clear all six fields
-
-\lhead{\textbf\@journalname, Vol. \@vol,~No. \@no,~\@months ~\@years, pp. \pageref{FirstPage}~$\sim$ \pageref{LastPage}
+\lhead{\textbf\@journalname , %
+Vol. \@vol,~No. \@no,~\@months ~\@years, pp. \pageref{FirstPage}~-- \pageref{LastPage} \\
+\@issn
 \\
-ISSN: 1693-6930, \small accredited First Grade by Kemenristekdikti, Decree No: 21/E/KPT/2018
-\\
-\@DOI
 }
-
-\rhead{$\blacksquare$\hspace{0.5cm}\thepage%
+\rhead{\framebox(5,5){}\hspace{1cm}\thepage%
 {\setlength{\unitlength}{1cm}
 \begin{picture}(0,0)
 %\put(-17.5,1.25){\includegraphics{IAEShead.pdf}}
 \end{picture}}
 }
-\lfoot{\normalsize\emph\@revhistory}
-%\lfoot{\normalsize\emph{\textbf{Journal Homepage:} \@revhistory}}
+\lfoot{\normalsize\emph\@journalhomepage}
+%\lfoot{\normalsize\emph{\textbf{Journal Homepage:} \@journalhomepage}}
 \rfoot{\setlength{\unitlength}{1cm}
 \begin{picture}(0,0)
 %\put(-17.5,-2){\includegraphics{IAESfoot.pdf}}
@@ -177,9 +184,9 @@ ISSN: 1693-6930, \small accredited First Grade by Kemenristekdikti, Decree No: 2
 \fancyhf{} % clear all six fields
 \fancyhead[RE,CO]{\@issn}
 \fancyhead[LO]{\textbf\@journalshortname}
-\fancyhead[LE]{\thepage\hspace{0.5cm}$\blacksquare$}
-\fancyhead[RO]{$\blacksquare$\hspace{0.5cm}\thepage}
-\fancyfoot[LE]{\textbf\@journalshortname ~Vol. \@vol,~No. \@no,~\@months ~\@years~: \pageref{FirstPage}~$\sim$ \pageref{LastPage}}
+\fancyhead[LE]{\thepage\hspace{1cm}\framebox(5,5){}}
+\fancyhead[RO]{\framebox(5,5){}\hspace{1cm}\thepage}
+\fancyfoot[LE]{\textbf\@journalshortname ~Vol. \@vol,~No. \@no,~\@months ~\@years~: \pageref{FirstPage}~-- \pageref{LastPage}}
 \fancyfoot[RO]{\emph\@shorttitle}
 \renewcommand{\headrulewidth}{0.7pt}
 \renewcommand{\footrulewidth}{0.7pt}
@@ -392,6 +399,8 @@ ISSN: 1693-6930, \small accredited First Grade by Kemenristekdikti, Decree No: 2
                                        {-1em}%
                                       {\normalfont\normalsize\bfseries}}
 
+%\renewcommand*{\chapterheadendvskip}{\vspace{0cm}}
+
 %% Indents and margins
 %% ------------------------
 \if@twocolumn
@@ -451,7 +460,7 @@ ISSN: 1693-6930, \small accredited First Grade by Kemenristekdikti, Decree No: 2
                        \gdef\@copyrightprefix{#1}%
                        \gdef\@copyrightyear{#2}%
                        \gdef\@copyrighttext{#3}% 
-                       \gdef\@CopyrightLine{\par\vskip1pc\hfill%
+                       \gdef\@CopyrightLine{\par\vskip1pc%
                        \noindent\ifx\@copyrightprefix\@empty\relax%
                        \else\@copyrightprefix~\fi%
                        \textcopyright~\@copyrightyear~%
@@ -459,6 +468,13 @@ ISSN: 1693-6930, \small accredited First Grade by Kemenristekdikti, Decree No: 2
 
 %% Abstract
 %% ----------
+
+%\parbox[l]{0.3\textwidth}{Revision history
+%\hrule
+%}
+%\parbox[r]{0.7\textwidth}{%
+%}
+
 \if@titlepage
   \newenvironment{abstract}{%
       \titlepage
@@ -471,14 +487,20 @@ ISSN: 1693-6930, \small accredited First Grade by Kemenristekdikti, Decree No: 2
      {\par\vfil\null\endtitlepage}
 \else
   \newenvironment{abstract}{%
+%        \hrule
+%        \vspace{.1em}
+%        \hrule
+%        \vspace{.5em}
       \if@twocolumn
        \section*{\abstractname}%
       \else
+        %\small
         \begin{center}%      
           {\bfseries\textit \abstractname\vspace{\z@}}%
         \end{center}%
         \small
-        \vspace{-9pt}
+        \vspace{-1em}
+       %\hrule\vspace{.5em}
         %\quotation
 	%\vfil
       \fi}
@@ -493,13 +515,12 @@ ISSN: 1693-6930, \small accredited First Grade by Kemenristekdikti, Decree No: 2
   \def\sep{\\}%
 %  \global\setbox\keybox=\vbox\bgroup\hsize=\textwidth
   \small\normalfont\def\baselinestretch{1}
-  \noindent
   \parskip\z@
-  %\textit{\bfseries{Keywords: }}
-  \textit{\bfseries{\keywordname :}}
-  %\raggedright                        % Keywords are not justified.
+  \textit{Keywords: }
+  %\par
+  \raggedright                         % Keywords are not justified.
   \ignorespaces}
-\def\endkeyword{\if@copyrightline\bfseries\emph\@CopyrightLine\fi}
+\def\endkeyword{\par }
 
 \def\history{%
 %  \def\sep{\\}%
@@ -700,7 +721,6 @@ ISSN: 1693-6930, \small accredited First Grade by Kemenristekdikti, Decree No: 2
 \setlength\bibindent{1.5em}
 \newenvironment{thebibliography}[1]
      {\section*{\refname}%
-      \small %set font 17/01/2019
       \@mkboth{\MakeUppercase\refname}{\MakeUppercase\refname}%
       \list{\@biblabel{\@arabic\c@enumiv}}%
            {\settowidth\labelwidth{\@biblabel{#1}}%
@@ -756,14 +776,13 @@ ISSN: 1693-6930, \small accredited First Grade by Kemenristekdikti, Decree No: 2
 \newcommand\contentsname{Contents}
 \newcommand\listfigurename{List of Figures}
 \newcommand\listtablename{List of Tables}
-\newcommand\refname{References}
+\newcommand\refname{REFERENCES}
 \newcommand\indexname{Index}
 \newcommand\figurename{Figure}
 \newcommand\tablename{Table}
 \newcommand\partname{Part}
 \newcommand\appendixname{APPENDIX}
 \newcommand\abstractname{Abstract}
-\newcommand\keywordname{Keyword}
 
 %% Date setting
 %% ---------------

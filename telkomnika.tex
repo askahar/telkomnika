@@ -20,23 +20,25 @@
 \titlespacing*{\subsection}{0cm}{0.5cm}{0cm}
 
 %%leave copyright info to the editor
-\CopyrightLine[Copyright]{2013}{Universitas Ahmad Dahlan. All rights reserved.}
+\CopyrightLine[Copyright]{2019}{Universitas Ahmad Dahlan. All rights reserved.}
 
 %%author
-\author[*]{\bfseries First Author}
-\author[ ]{\bfseries Second Author}
-\author[ ]{\bfseries Third Author}
+\author[*1]{\bfseries First Author}
+\author[2]{\bfseries Second Author}
+\author[3]{\bfseries Third Author}
 %%author's affiliation
-\affil[ ]{Institution/affiliation}
-\affil[ ]{addres, telp/fax of institution/affiliation}
-\affil[*]{corresponding author, e-mail: xxxx@xxxx.xxx}
+\affil[1,3]{Institution/affiliation, country}
+\affil[2]{Institution/affiliation, country}
+\affil[ ]{address, telp/fax of institution/affiliation}
+\affil[*]{Corresponding author, e-mail: xxxx@xxxx.xxx}
 
 %%title and shortitle (for footer)
-\title{A Title Should Be the Fewest Possible Words That Accurately Describe the Content of the Paper}
-\shorttitle{Title of manuscript is short and clear, implies research results (First Author)}
+\title{A title should be the fewest possible words that accurately describe the content of the paper}
+\shorttitle{A title should be the fewest possible words that accurately describe the ... (First Author)}
 
 %%starting
 \begin{document}
+\setcounter{page}{1001} %set first page
 
 %%indentation. do not change
 \setlength{\parindent}{1.27cm}
@@ -48,14 +50,16 @@
 %%journal info
 \journalname{TELKOMNIKA}
 \journalshortname{TELKOMNIKA}
-\revhistory{Received May 9, 201x; Revised August 3, 201x; Accepted August 16, 201x}
-\vol{x}
-\no{x}
-\months{April}
-\years{2013}
+\revhistory{Received October 14, 2017; Revised May 20, 2018; Accepted June 13, 2018}
+\vol{16}
+\no{5}
+\months{October}
+\years{2018}
+%\issn{2302-4046}
 \issn{1693-6930}
+\DOI{10.12928/TELKOMNIKA.v16i4.9056}
 
-%%build title
+%build title
 \maketitle
 
 
@@ -114,7 +118,7 @@ z & 20 & 15.3 \\
 \caption{Effects of selecting different switching under dynamic condition}
 \end{figure}
 
-\section{Result and Analysis}
+\section{Results and Discussion}
 \label{}
 In this section, it is explained the results of research and at the same time is given the comprehensive discussion. Results can be presented in figures, graphs, tables and others that make the reader understand easily \cite{Arulmozhiyal}, \cite{lamport}. The discussion can be made in several sub-chapters.
 
@@ -134,9 +138,9 @@ Proper citation of other works should be made to avoid plagiarism. When referrin
 \label{}
 Provide a statement that what is expected, as stated in the "Introduction" chapter can ultimately result in "Results and Discussion" chapter, so there is compatibility. Moreover, it can also be added the prospect of the development of research results and application prospects of further studies into the next (based on result and discussion).
 
-\section*{Acknowledgement}
+\section*{Acknowledgment}
 \label{}
-The acknowledgment section is optional. The funding source of the research can be put here.
+The acknowledgment on is optional. The funding source of the research can be put here.
 
 %% The Appendices part is started with the command \appendix;
 %% appendix sections are then done as normal sections

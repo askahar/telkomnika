@@ -20,7 +20,7 @@
 %% 17/11/2012	imamul	modified 'iaesarticle.cls' to 'iaesarticle2.cls' (temp)
 %% 					edit font to times
 %% 03/04/2013	imamul	modified 'iaesarticle2.cls' to 'iaesarticle3.cls' (telkomnika)
-%% 17/01/2019	imamul	see comments
+
 
 %% Version and identification
 %% -----------------------------
@@ -143,21 +143,17 @@
 \def\revhistory#1{\gdef\@revhistory{#1}}
 \def\months#1{\gdef\@months{#1}}
 \def\years#1{\gdef\@years{#1}}
-\def\DOI#1{\gdef\@DOI{DOI: #1}} %set DOI 17/01/2019
 
 %% Header and footer
 %% ----------------------
 \RequirePackage{fancyhdr}
 \fancypagestyle{firstpage}{%
 \fancyhf{} % clear all six fields
-
-\lhead{\textbf\@journalname, Vol. \@vol,~No. \@no,~\@months ~\@years, pp. \pageref{FirstPage}~$\sim$ \pageref{LastPage}
+\lhead{\textbf\@journalname , %
+Vol. \@vol,~No. \@no,~\@months ~\@years, pp. \pageref{FirstPage}~$\sim$ \pageref{LastPage} \\
+\@issn
 \\
-ISSN: 1693-6930, \small accredited First Grade by Kemenristekdikti, Decree No: 21/E/KPT/2018
-\\
-\@DOI
 }
-
 \rhead{$\blacksquare$\hspace{0.5cm}\thepage%
 {\setlength{\unitlength}{1cm}
 \begin{picture}(0,0)
@@ -495,8 +491,7 @@ ISSN: 1693-6930, \small accredited First Grade by Kemenristekdikti, Decree No: 2
   \small\normalfont\def\baselinestretch{1}
   \noindent
   \parskip\z@
-  %\textit{\bfseries{Keywords: }}
-  \textit{\bfseries{\keywordname :}}
+  \textit{\bfseries{Keywords: }}
   %\raggedright                        % Keywords are not justified.
   \ignorespaces}
 \def\endkeyword{\if@copyrightline\bfseries\emph\@CopyrightLine\fi}
@@ -700,7 +695,6 @@ ISSN: 1693-6930, \small accredited First Grade by Kemenristekdikti, Decree No: 2
 \setlength\bibindent{1.5em}
 \newenvironment{thebibliography}[1]
      {\section*{\refname}%
-      \small %set font 17/01/2019
       \@mkboth{\MakeUppercase\refname}{\MakeUppercase\refname}%
       \list{\@biblabel{\@arabic\c@enumiv}}%
            {\settowidth\labelwidth{\@biblabel{#1}}%
@@ -763,7 +757,6 @@ ISSN: 1693-6930, \small accredited First Grade by Kemenristekdikti, Decree No: 2
 \newcommand\partname{Part}
 \newcommand\appendixname{APPENDIX}
 \newcommand\abstractname{Abstract}
-\newcommand\keywordname{Keyword}
 
 %% Date setting
 %% ---------------
