@@ -1,0 +1,521 @@
+%%class
+\documentclass{iaesarticle3}
+
+%%required package. add for your convenient, but do not remove the initial
+\usepackage{amsmath, amsfonts, amssymb, float, fancyhdr}
+\usepackage[scaled]{uarial}
+\usepackage[figuresright]{rotating}
+\newtheorem{example}{Example}
+\newtheorem{ex}{Exercise}
+\newtheorem{definition}{Definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{rem}{Remaks}
+\newtheorem{lem}{Lemma}
+\newtheorem{Case}{\quad Case}
+\usepackage{authblk, graphicx, indentfirst, lastpage, lipsum}
+\setlength{\affilsep}{0cm}
+\renewcommand\Authfont{\normalsize}
+\renewcommand\Affilfont{\normalfont\small}
+\usepackage{subfig, caption, epstopdf}
+\usepackage[left=3cm, right=3cm, top=3cm, bottom=3cm, includefoot]{geometry}
+\usepackage{caption}
+\captionsetup{labelsep=period}
+\usepackage{titlesec}
+\titleformat{\section}
+  {\normalfont\normalsize\bfseries}{\thesection}{1em}{}
+\titlespacing*{\section}{0cm}{0.7cm}{0cm}
+\titlespacing*{\subsection}{0cm}{0.5cm}{0cm}
+
+%%leave copyright info to the editor
+\CopyrightLine[Copyright]{2013}{Universitas Ahmad Dahlan. All rights reserved.}
+
+
+%%author
+\author[1]{\bfseries Y. Dasril}
+\author[2]{\bfseries Zahriladha Zakaria}
+\author[3]{\bfseries I. B. Mohd}
+%%author's affiliation
+\affil[1,2]{Center for Telecommunication Research \& Innovation \\
+            Faculty of Electronics and Computer Engineering\\
+            Universiti Teknikal Malaysia Melaka (UTeM), Hang Tuah Jaya\\
+\small 76100 Melaka, Malaysia}
+\affil[1,3]{Center for Mathematical Research (INSPEM) \\
+            Universiti Putra Malaysia (UPM)\\
+            43400 Serdang Lama, Malaysia}
+\affil[1]{e-mail: yosza@utem.edu.my,~~zahriladha@utem.edu.my}
+
+%%title and shortitle (for footer)
+\title{Using Alpha-Cuts and Constraint Exploration Approach on Quadratic Programming Problem}
+\shorttitle{Alpha-Cuts and Constraint Exploration Approach on QPP (Y. Dasril)}
+
+%%starting
+\begin{document}
+
+%%indentation. do not change
+\setlength{\parindent}{1.27cm}
+
+%%header and footer setting. do not change
+\pagestyle{fancy}
+\fancyhfoffset{0cm}
+
+%%journal info
+\journalname{TELKOMNIKA}
+\journalshortname{TELKOMNIKA}
+\revhistory{Received May 9, 201x; Revised August 3, 201x; Accepted August 16, 201x}
+\vol{x}
+\no{x}
+\months{April}
+\years{2013}
+\issn{1693-6930}
+
+%%build title
+\maketitle
+
+
+\begin{abstract}
+\textit{\indent
+%% Text of abstract
+In this paper, we propose a computational procedure to find the optimal solution of quadratic programming problems by using fuzzy $\alpha$-cuts and constraint exploration approach. We solve the problems in the original form without using any additional information such as Lagrange's multiplier, slack, surplus and artificial variable. In order to find the optimal solution, we divide the calculation in two stages. In the first stage, we determine the unconstrained minimization of the quadratic programming problem (QPP) and check its feasibility. By unconstrained minimization we identify the violated constraints and focus our searching in these constraints. In the second stage, we explored the feasible region along side the violated constraints until the optimal point is achieved.  A numerical example is included in this paper to illustrate the capability of $\alpha$-cuts and constraint exploration to find the optimal solution of QPP.
+%%
+}
+\end{abstract}
+
+\begin{keyword}
+\textit{
+%%write keyword here. separate by comma (,)
+fuzzy optimal solution, triangular fuzzy number, feasible set, quadratic programming, positive definite.
+%%
+}
+\end{keyword}
+
+
+%% main text
+
+\section{Introduction}
+\label{}
+The theory of quadratic programming problem (QPP) deals with problems of constrained minimization, where the constraint functions are linear and the objective is a positive definite quadratic function \cite{iby, isy}. Many engineering problems can be represented as QPP such as in sensor network localization, principle component analysis and optimal power flow \cite{bose} and design of digital filters. The design aspect of digital filters that can be handled by quadratic programming problem efficiently is to choose the parameters of the filter to achieve a specified type of frequency response \cite{anto}.
+
+Although there is a natural transition from the theory of linear programming to the theory of nonlinear programming problem, there are some important differences between their optimal solution. If the optimum solution of quadratic programming problem exists then it is either an interior point or boundary point which is not necessarily an extreme point of the feasible region.
+
+The QPP model involves a lot of parameters whose values are assigned by experts. However, both experts and decision makers frequently do not precisely know the values of those parameters. Therefore, it is useful to consider the knowledge of experts about the parameters as fuzzy data \cite{zad}.
+
+Bellman and Zadeh \cite{bel} proposed the concept of decision making in fuzzy environment while Tanaka et al, \cite{Tan} adopted this concept for solving mathematical programming problems. Zimmerman \cite{zim} proposed the first formulation of fuzzy linear programming. Ammar and Khalifah \cite{amm} introduced the formulation of fuzzy portfolio optimization problem as a convex quadratic programming approach and gave an acceptable solution to such problem.
+
+The constraint exploration has been proposed by \cite{ism} where the method is based on the violated constraints by the unconstrained minimum of the objective function of QPP for exploring, locating and computing the optimal solution of the QPP. In this paper, we extend the concept of constraint exploration method to solve the QPP in fuzzy environment. By using this approaches the fuzzy optimal solution of the QPP occurring in the real life situations can be obtained.
+
+This paper is organized as follows. In Section 2, some basic notations, definitions and arithmetic operations between two triangular fuzzy numbers are reviewed. In Section 3, formulation of the QPP and determination of the unconstrained optimal solution in fuzzy environment are discussed. In Section 4, a method to determine the optimal solution on the boundary of violated constraints is described. In Section 5, a new approaches or algorithm for solving the QPP is proposed. To illustrate the capability of the proposed method, numerical examples are solved in Section 6. The conclusion ends this paper.
+
+\section{Preliminaries}\label{prem}
+\label{}
+In this section, some necessary notations and arithmetic operations of fuzzy set theory are reviewed.
+
+\subsection{Basic Definition}
+\begin{definition}
+    \emph{\cite{kau}} The characteristic function $\mu_{A}$ of a crisp set $A \subseteq X$ assigns a value either $0$ or $1$ to each member in $X$. This function can be generalized to a function $\mu_{\bar{A}}$ such that the value assigned to the element of the universal set $X$ falls within a specified range i.e. $\mu_{\bar{A}}\colon X \to [0,1]$. The assigned value indicates the membership grade of the element in the set $A$. The function $\mu_{\bar{A}}$ is called the membership function and the set $\bar{A} = \{(x, \mu_{\bar{A}}(x))\colon x \in X \}$ defined by $\mu_{\bar{A}}$ for each $x \in X$ is called a fuzzy set.
+\end{definition}
+\begin{definition}
+    \emph{\cite{lio}} A fuzzy number $\bar{A} = (a,b,c)$ is called a triangular fuzzy number if its membership function is given by
+    \begin{displaymath}
+        \mu_{\bar{A}}(x) =
+        \left \{ \begin{array}{ll}
+            \frac{(x-a)}{(b-a)},& a\leq x\leq b \\
+            \frac{(x-c)}{(b-c)}, & b\leq x \leq c\\
+            0, & \textrm{otherwise},
+        \end{array} \right.
+    \end{displaymath}
+    
+    \noindent and $\alpha-$cuts corresponding to $\bar{A} = (a, b, c)$ can be written as
+   
+    \begin{displaymath}
+        \bar{A}[\alpha] = [a_1(\alpha), a_2(\alpha)], \qquad \alpha \in [0,1]
+    \end{displaymath} where $a_1(\alpha) = [(b-a)\alpha +a)]$ and $a_2(\alpha) = [-(c-b)\alpha+ c]$.
+\end{definition}
+
+\begin{definition}
+    \emph{\cite{lio}} A triangular fuzzy number $(a, b, c)$ is said to be non-negative fuzzy number if and only if $a > 0$.
+\end{definition}
+
+\begin{definition}
+    Let $\bar{A} = (a_1, b_1, c_1)$ and $\bar{B} = (a_2, b_2, c_2)$ be two triangular fuzzy numbers, then
+    \begin{description}
+        \item[(a)] $(\bar{A}) \preceq (\bar{B})$ iff $a_1 \leq a_2, b_1 - a_1 \leq b_2 - a_2, c_1 - b_1 \leq c_2 - b_2$.
+        \item[(b)] $(\bar{A}) \succeq (\bar{B})$ iff $a_1 \geq a_2, b_1 - a_1 \geq b_2 - a_2, c_1 - b_1 \geq c_2 - b_2$.
+        \item[(c)] $(\bar{A}) = (\bar{B})$ iff $a_1 = a_2, b_1 - a_1 = b_2 - a_2, c_1 - b_1 = c_2 - b_2$.
+    \end{description}
+\end{definition}
+
+
+\subsection{Fuzzy Arithmetic}
+
+The following concepts and results are introduced in \cite{kau, jam}. Let $ \bar{A}[\alpha] = [a_\alpha^-,\ a_\alpha^+]$ and $\bar{B}[\alpha] = [b_\alpha^-,\ b_\alpha^+]$ be two closed, bounded, intervals of real numbers. If $*$ denotes addition, substraction, multiplication, or division, then $[a_\alpha^-,\ a_\alpha^+] * [b_\alpha^-,\ b_\alpha^+] = [\beta, \delta]$ where
+
+   $$  [\beta, \delta] = \{a * b | a_\alpha^- \leq a \leq a_\alpha^+,~ b_\alpha^- \leq b \leq b_\alpha^+\}.$$
+
+If $*$ is division, we must assume that zero does not belong to $[b_\alpha^-, b_\alpha^+]$. We may simplify the above equation as follows:
+
+\begin{enumerate}
+    \item Addition\\
+        $[a_\alpha^-,\ a_\alpha^+] \oplus [b_\alpha^-,\ b_\alpha^+] = [a_\alpha^- + b_\alpha^-,\ a_\alpha^+ + b_\alpha^+]$.
+    \item Substraction\\
+        $[a_\alpha^-,\ a_\alpha^+] \ominus [b_\alpha^-,\ b_\alpha^+] = [a_\alpha^- - b_\alpha^+,\ a_\alpha^+ - b_\alpha^-]$.
+    \item Division \\
+        $[a_\alpha^-,\ a_\alpha^+] \oslash [b_\alpha^-,\ b_\alpha^+] = [a_\alpha^-,\ a_\alpha^+] \otimes [\frac{1}{b_\alpha^+},\ \frac{1}{b_\alpha^-}]$.
+    \item Multiplication\\
+        $[a_\alpha^-,\ a_\alpha^+] \otimes [b_\alpha^-,\ b_\alpha^+] = [\beta, \delta]$ \\
+        where\\ $\beta = min\{a_\alpha^-\cdot b_\alpha^-,\ a_\alpha^-\cdot b_\alpha^+,\ a_\alpha^+\cdot b_\alpha^-,\ a_\alpha^+\cdot b_\alpha^+ \}$ and\\
+        $\delta = max\{a_\alpha^-\cdot b_\alpha^-,\ a_\alpha^-\cdot b_\alpha^+,\ a_\alpha^+\cdot b_\alpha^-,\ a_\alpha^+\cdot b_\alpha^+ \}$.
+\end{enumerate}
+
+\begin{rem}
+    Multiplication may be further simplified as follows. For $\bar{A} = (a, b, c)$ and $\bar{B} = (x, y, z)$ be a non-negative triangular fuzzy numbers, then
+
+    \begin{displaymath}
+        \bar{A}\otimes \bar{B} =
+        \left \{ \begin{array}{ll}
+        (ax, by, cz),& a \geq 0 \\
+        (az, by, cz), & a<0,\ c\geq 0\\
+        (az, by, cx), & c<0
+        \end{array} \right.
+    \end{displaymath}
+\end{rem}
+\begin{lem}
+    \cite{zoh}. Suppose that $f(x), x \in \mathbb{R}^n$ is an ordinary real valued function, and $\bar{A}$ be the set of all closed and bounded fuzzy numbers. If $\bar{r} =(r_1,r_2,r_3) \in \bar{A}$ then $\bar{r}$ satisfied:
+
+\begin{enumerate}
+    \item $\{x| x \in \Re, \bar{r}(x) = 1\} \neq \emptyset$
+    \item if we define $f(\bar{r}) \triangleq \bigcup_{\alpha \in [0,1]}f(\bar{r}_\alpha)$ then
+    \begin{displaymath}
+        \Big(f(\bar{r}_1)\Big)_\alpha = f(\bar{r}_\alpha) = \Big[\wedge_{x \in \bar{r}_\alpha} f(x),\ \vee_{x\in \bar{r}_\alpha} f(x) \Big]
+    \end{displaymath}
+    \item $f(\bar{r}_\alpha) \in \bar{A}$.
+\end{enumerate}
+\end{lem}
+
+\section{Problem Formulation}\label{pf}
+A quadratic function on $\mathbb{R}^n$ to be considered in this paper, which is defined by
+
+\begin{equation}\label{pers1}
+    f(x_1,\cdots, x_n) = \frac{1}{2} \sum_{j=1}^n \sum_{i=1}^n x_id_{ij} x_j + \sum_{j=1}^nc_jx_j
+\end{equation}
+
+\noindent where $q, c_i$ and $d_{ij}, (i,j=1,...,n)$ are constant scalar quantities. Equation (\ref{pers1}) can be written in vector-matrix notation as
+
+\begin{equation}\label{pers2}
+    f(x) = \frac{1}{2} x^TDx + c^Tx
+\end{equation}
+
+\noindent in which $D = (d_{ij})_{n \times n}, c = (c_1,..., c_n)^T$, and $x = (x_1,..., x_n)^T$.
+
+Without loss of generality, we consider $D$ to be a positive definite symmetric matrix and if $D$ is a positive definite, then $f(x)$, which is given by (\ref{pers2}), can be called a positive definite quadratic function.
+
+The set all feasible solutions, so-called the feasible region, which will be considered in this paper, is a closed set defined by
+
+\begin{equation}\label{pers3}
+    F = \{x|x \in \mathbb(R)^n, Ax \leq b, x \geq 0 \}
+\end{equation}
+
+\noindent where $A$ an $(mxn)$ matrix and $b$ is a vector in $\mathbb{R}^m$.
+
+Since $f(x)$ given by (\ref{pers1}) is positive definite quadratic function, then $f(x)$ is strictly convex in $x$, therefore $f(x)$ attains a unique minimum at
+
+\begin{equation}\label{pers4}
+    x^{(0)} = -D^{-1}c
+\end{equation}
+
+\noindent which is called unconstrained minimum of $f(x)$. As mention in Section 1, $x^{(0)}$ can be an interior point or boundary point of feasible region. However, there is one more possibility that is $x^{(0)}$ can be an exterior point. Therefore, if $x^{(0)} \in F$, then $x^{(0)}$ becomes the optimal solution of the QPP \cite{iby}.
+
+Another advantage of strictly convex properties of $f(x)$ is that, if $x^{(0)}$ is an exterior point, then definitely, $x^*$, the optimal solution of the considered problem is on the boundary of the feasible region. Therefore, $x^*$ must be located on one of the active or equality constraints or on the intersection of several active (equality) constraints \cite{isy, ism}.
+
+In the conventional approach, the values of the parameters of QPP models must be well defined and precise. However, in real life world environment this is not a realistic assumption. In the real problems there may exist uncertainty about the parameters. In such a situation, the parameters of QPP with $m$ fuzzy constraints and $n$ fuzzy variables may be formulated as follows:
+
+\begin{equation}\label{pers5}                                             % objevtive function
+    Minimize \qquad \bar{Z}(\bar{x}) = \frac{1}{2} \sum_{j=1}^n \sum_{i=1}^n \bar{x}_i \bar{d}_{ij} \bar{x}_j + \sum_{i=1}^n \bar{c}_i\bar{x}_i
+\end{equation}
+
+\noindent subject to
+\begin{equation}\label{pers6}                                              % constraint function
+    \sum_{i=1}^m \sum_{j=1}^n \bar{a}_{ij} \bar{x}_j \preceq \sum_{i=1}^m \bar{b}_i
+\end{equation}
+
+\noindent where $\bar{c} = (\bar{c}_i)_{n \times 1}$, $\bar{A} = (\bar{a}_{ij})_{m \times n}$, $\bar(b) = (\bar{b}_i)_{m \times 1}$, $\bar{D} = (\bar{d}_{ij})_{n \times n}$ is a positive definite and symmetric matrix of fuzzy numbers and all variables, $\bar{x} = (\bar{x}_1, \cdots, \bar{x}_n)$ are non-negative fuzzy numbers.
+
+
+\begin{definition}
+      \emph{\cite{mal}}, Any set of $x_i$ which satisfies the set of the constraints in (\ref{pers6}) is called feasible solution for (\ref{pers5})-(\ref{pers6}). Let $F$ be the set  of all feasible solutions of (\ref{pers6}). We shall say that $x^* \in F$ is an optimal feasible solution for (\ref{pers5})-(\ref{pers6}) if $\bar{Z}(x^*) \preceq \bar{Z}(x),  \forall x \in F$.
+\end{definition}
+
+\begin{rem}
+    The fuzzy optimal solution of QPP problem (\ref{pers5})-(\ref{pers6}) will be a triangle fuzzy number $\bar{x}^*[\alpha] = [x_1^*(\alpha), x_2^*(\alpha)]$ if its satisfies the following conditions.
+\end{rem}
+
+\begin{enumerate}
+  \item $\bar{x}^* $is a non-negative fuzzy number
+  \item $\bar{A}\otimes \bar{x}^* \preceq \bar{b}$
+  \item $\bar{x}_1^*(\alpha)$ monotonically increasing, $0 \leq \alpha \leq 1$
+  \item $\bar{x}_2^*(\alpha)$ monotonically decreasing, $0 \leq \alpha \leq 1$
+  \item $\bar{x}_1^*(1) \preceq \bar{x}_2^*(1)$
+\end{enumerate}
+
+By using $\alpha$-cuts notation \cite{kau}, the fuzzy QPP of Equation (\ref{pers5})-(\ref{pers6}) can be written as follows:
+
+\begin{equation}\label{pers7}
+    Minimize \quad \bar{Z}_\alpha(\bar{x}) = \frac{1}{2} \sum_{j=1}^n \sum_{i=1}^n [(d_{ij}^-)_\alpha,  (d_{ij}^+)_\alpha]\bar{x}_i \bar{x}_j + \sum_{i=1}^n [(c_i^-)_\alpha, (c_i^+)_\alpha] \bar{x}_i + [(q^-)_\alpha, (q^+)_\alpha]
+\end{equation}
+
+\noindent subject to
+\begin{equation}\label{pers8}
+    \sum_{i=1}^m \sum_{j=1}^n [(a_{ij}^-)_\alpha, (a_{ij}^+)_\alpha] \bar{x}_j \preceq \sum_{i=1}^m [(b_i^-)_\alpha, (b_i^+)_\alpha]
+\end{equation}
+
+\noindent all variables are non-negative, and $\alpha \in [0,1]$.
+
+%--------------------------
+By separation terms $\bar Z(\alpha)^-$ and $\bar Z(\alpha)^+$ of Equation (\ref{pers7}), we have two types of the fuzzy QPP to be solved, as follows:
+
+\begin{equation}\label{pers5a}
+ \left.\begin{aligned}
+        \text{ Min} \quad (\bar Z_\alpha(x))^- &= \sum_{i=1}^n\sum_{j=1}^n x_j^- d_{i,j} x_j^- + \sum_{j=1}^n c_j^{T-}x_j^- \\
+        \text{ s.t } \qquad \quad \quad \qquad & \\
+        \sum_{i=1}^m\sum_{j=1}^n a_{i,j}x_j^- &\preceq \sum_{i=1}^m b_i^-
+       \end{aligned}
+ \right \}
+\end{equation}
+
+\noindent with all variables are non negative, and $\alpha \in [0,1]$, and
+
+\begin{equation}\label{pers5b}
+ \left.\begin{aligned}
+        \text{ Min} \quad (\bar Z_\alpha(x))^+ &= \sum_{i=1}^n\sum_{j=1}^n x_j^+ d_{i,j} x_j^+ + \sum_{j=1}^n c_j^{T+}x_j^+ \\
+        \text{ s.t } \qquad \quad \quad \qquad & \\
+        \sum_{i=1}^m\sum_{j=1}^n a_{i,j}x_j^+ &\preceq \sum_{i=1}^m b_i^+
+       \end{aligned}
+ \right \}
+\end{equation}
+
+\noindent with all variables are non negative, and $\alpha \in [0,1]$.
+
+Any set of $\bar x(\alpha) = [x(\alpha)^-, x(\alpha)^+]$ which satisfies the set of the constraints in (\ref{pers6}) is called feasible solutions. Let $F$ in Equation (\ref{pers3}) be the set of all feasible solutions, we shall say that $\bar x^* = [x^*(\alpha)^-, x^*(\alpha)^+]$ resides inside of $F$ is an optimal feasible solution provided $\bar Z_\alpha(x^*) \preceq \bar Z_\alpha(x)$ for all $\bar x\in F$.
+
+Since $\bar z_\alpha(x)$ given by (\ref{pers7}) is a positive definite quadratic function, then $\bar z_\alpha(x)$ is strictly convex in $\bar x_\alpha(x) = [x(\alpha)^-, x(\alpha)^+]$, therefore $\bar z_\alpha(x)$ attains a unique minimum at
+
+\begin{equation}\label{pers6a}
+    \sum_{j=1}^n d_{i,j}x_j^- = \sum_{j=1}^nc_j^-, \quad \text{ and } \qquad \sum_{j=1}^n d_{i,j}x_j^+ = \sum_{j=1}^nc_j^+
+\end{equation}
+for $(i=1,\cdots, m)$.
+
+
+If we denoted $x^{(0)} = [x^{(0)}(\alpha)^-, x^{(0)}(\alpha)^+]$ as the fuzzy unconstrained minimum of (\ref{pers5}) then we have
+
+\begin{equation}\label{pers6b}
+    x^{(0)-} = -\sum_{j=1}^n(d_{i,j})^{-1}c_j^-, \quad \text{ and } \qquad x^{(0)^+} = -\sum_{j=1}^n(d_{i,j})^{-1}c_j^+.
+\end{equation}
+%--------------------------
+
+
+\section{Searching The Equality Constraint Point} \label{equality}
+This section will describe how to search a point on the equality constraint which becomes a candidate of optimal solution to the problem (\ref{pers7}) - (\ref{pers8}). This method will be applied to the equality constraint which are violated by $x^{(0)}$, which is $A^T_jx_j > b_i$, $(i=1,\cdots, n, j=1,\cdots, m)$. Let us consider the constraint of the QPP given by
+
+\begin{eqnarray}\label{eqn1}
+% \nonumber to remove numbering (before each equation)
+  a_{i,1}x_1 + a_{i,2}x_2 + \cdots + a_{i,k}x_k &\leq& b_i, \quad (k\leq n) \\
+  \label{eqn2}
+  a_{j,1}x_1 + a_{j,2}x_2 + \cdots + a_{j,k}x_k &\leq& b_j.
+\end{eqnarray}
+
+
+\noindent and their equality constraints is given by
+
+\begin{eqnarray}\label{eqn3}
+% \nonumber to remove numbering (before each equation)
+  a_{i,1}x_1 + a_{i,2}x_2 + \cdots + a_{i,k}x_k &=& b_i, \\
+  \label{eqn4}
+  a_{j,1}x_1 + a_{j,2}x_2 + \cdots + a_{j,k}x_k &=& b_j.
+\end{eqnarray}
+
+The fuzzy equality constraints can be written as
+
+\begin{equation}\label{eqn5}
+    a_{i,1} (x_1^-,x_1^+) + a_{i,2}(x_2^-,x_2^+) + \cdots + a_{i,k}(x_k^-,x_k^+) = [b_i^-,b_1^+]
+\end{equation}
+\begin{equation}\label{eqn6}
+    a_{j,1} (x_1^-,x_1^+) + a_{j,2}(x_2^-,x_2^+) + \cdots + a_{j,k}(x_k^-,x_k^+) = [b_j^-,b_j^+].
+\end{equation}
+
+\noindent or
+\begin{equation}\label{eqn7}
+    \left.\begin{array}{l}
+        a_{i,1} x_1^- + a_{i,2}x_2^- + \cdots + a_{i,k}x_k^- = b_i^-, \\
+        a_{i,1} x_1^+ + a_{i,2}x_2^+ + \cdots + a_{i,k}x_k^+ = b_i^+, \\
+    \end{array}\right\}
+\end{equation}
+
+\begin{equation}\label{eqn8}
+    \left.\begin{array}{l}
+        a_{j,1}x_1^- + a_{j,2}x_2^- + \cdots + a_{j,k}x_k^- = b_j^-, \\
+        a_{j,1}x_1^+ + a_{j,2}x_2^+ + \cdots + a_{j,k}x_3^+ = b_j^+.
+    \end{array}\right\}
+\end{equation}
+
+
+Clearly, the point
+\begin{equation}\label{pers10}
+    \bigg(\frac{\bar{b}_i^-}{a_{1,1}}(1 - \omega_1 - \cdots - \omega_{k-1}), \frac{\bar{b}_i^-}{a_{1,2}}\omega_1, \cdots, \frac{\bar{b}_i^-}{a_{1,k}}\omega_{k-1}\bigg)
+\end{equation}
+
+\noindent and
+\begin{equation}\label{pers10a}
+    \bigg(\frac{\bar{b}_i^+}{a_{1,1}}(1 - \omega_1 - \cdots - \omega_{k-1}), \frac{\bar{b}_i^+}{a_{1,2}}\omega_1, \cdots, \frac{\bar{b}_i^+}{a_{1,k}}\omega_{k-1}\bigg)
+\end{equation}
+
+\noindent which lies on the Equation (\ref{eqn3}) is uniquely determined since there is one to one correspondence between the point and its respected $\omega_i$, $(i=1,...,k-1)$. Therefore, by substituting the point in Equation (\ref{pers10}) into quadratic function (\ref{pers8}), we can obtain the function with $\omega_i$ as the independent variable from which the unconstrained minimum of $f(\omega_i)$ can be achieved through minimizing $f(\omega_i)$ with respect to $\omega_i$. If $\omega_i^*$, $(i=1,...,k-1)$ denotes the unconstrained minimum of $f(\omega_i)$, then we obtain the point
+
+\begin{equation}\label{pers11a}
+    \bigg(\frac{\bar{b}_i^-}{a_{1,1}}(1 - \omega_1^* - \cdots - \omega_{k-1}^*), \frac{\bar{b}_i^-}{a_{1,2}}\omega_1^*, \cdots, \frac{\bar{b}_i^-}{a_{1,k}}\omega_{k-1}^*\bigg)
+\end{equation}
+
+\noindent and
+\begin{equation}\label{pers11a}
+    \bigg(\frac{\bar{b}_i^+}{a_{1,1}}(1 - \omega_1^* - \cdots - \omega_{k-1}^*), \frac{\bar{b}_i^+}{a_{1,2}}\omega_1^*, \cdots, \frac{\bar{b}_i^+}{a_{1,k}}\omega_{k-1}^*\bigg)
+\end{equation}
+
+\noindent which refers to the fuzzy constrained minimum of $f(x)$, subject to the equality constraint given by (\ref{eqn3}) and we denoted by
+
+\begin{equation}\label{11c}
+    x_i^* = \bigg(\frac{\bar{b}_i^-}{a_{1,1}}(1 - \omega_1^* - \cdots - \omega_{k-1}^*), \frac{\bar{b}_i^-}{a_{1,2}}\omega_1^*, \cdots, \frac{\bar{b}_i^-}{a_{1,k}}\omega_{k-1}^*, \frac{\bar{b}_i^+}{a_{1,1}}(1 - \omega_1^* - \cdots - \omega_{k-1}^*), \frac{\bar{b}_i^+}{a_{1,2}}\omega_1^*, \cdots, \frac{\bar{b}_i^+}{a_{1,k}}\omega_{k-1}^*\bigg)
+\end{equation}
+
+By the similar way, for equation given by (\ref{eqn6}), we have
+
+\begin{equation}\label{11d}
+    x_j^* = \bigg(\frac{\bar{b}_j^-}{a_{1,1}}(1 - \omega_1^* - \cdots - \omega_{k-1}^*), \frac{\bar{b}_j^-}{a_{1,2}}\omega_1^*, \cdots, \frac{\bar{b}_j^-}{a_{1,k}}\omega_{k-1}^*, \frac{\bar{b}_j^+}{a_{1,1}}(1 - \omega_1^* - \cdots - \omega_{k-1}^*), \frac{\bar{b}_j^+}{a_{1,2}}\omega_1^*, \cdots, \frac{\bar{b}_j^+}{a_{1,k}}\omega_{k-1}^*\bigg)
+\end{equation}
+\noindent 
+which refers to the fuzzy constrained minimum of $f(x)$, subject to the equality constraint given by (\ref{eqn4}).
+
+\section{The Outline of Algorithm}\label{alg}
+
+The results shown in previous section can be used to obtain an algorithm for finding the fuzzy optimal solution of QPP. The brief algorithm is as follows:
+\begin{enumerate}
+  \item Compute $\bar{x}^{(0)}$, the unconstrained minimum of $f(x)$ by using (\ref{pers6b})
+  \item If $\bar{x}^{(0)}$ satisfies all the constraints provided by the problem, then stop, $\bar{x}^{(0)}$ becomes the fuzzy optimal solution of the QPP. But if $x^{(0)} \notin F$, then push all the indexes of the constraints violated by $\bar{x}^{(0)}$ onto the set $S$, where $S = \{j|A_j^T\bar{x} > b_j, j \in \{1, \cdots, m\}\}$ for further investigation.
+  \item Compute $\bar{x}_j^*$, the fuzzy constrained minimum of $f(x)$ subject to equality constraint $j$ where $j \in S$. If $\bar{x}_j^* \in F$ for one $j \in S$, then $\bar{x}_j^*$ is the fuzzy optimal solution of QPP and stop. Otherwise, search the fuzzy optimal solution of QPP which might be located on the equality or intersection of two and more equality violated constraints by $\bar{x}^{(0)}$ according to the method explained in \cite{iby, isy, ism}.
+\end{enumerate}
+
+\section{Numerical Results}\label{nm}
+
+An example has been illustrated to show the capability of the constraints exploration method. Example taken from \cite{dav}, where the objective function is to minimize the quadratic function and the constraint functions consist of two linear functions. The first constraint have an equality sign and the second constraint have an inequalities sign.
+
+\begin{equation}\label{pers20}
+    Minimized \quad z = (x_1 - 1)^2 + (x_2 - 2)^2
+\end {equation}
+\noindent
+subject to
+\begin{equation}\label{pers21}
+    -x_1 + x_2 = 1
+\end{equation}
+\begin{equation}\label{pers22}
+    x_1 + x_2 \leq 2
+\end{equation}
+\noindent
+and
+\begin{equation}\label{pers23}
+    (x_1, x_2) \geq (0, 0).
+\end{equation}
+
+The fuzzy QPP of the problem (\ref{pers20}) - (\ref{pers23}) with $\alpha \in [0,1]$ can be written as
+
+\begin{equation}\label{pers24}
+    Minimized \quad \bar{Z}_\alpha (\bar{x}) = (\bar{x}_1 - \bar{1})^2 + (\bar{x}_2 - \bar{2})^2
+\end{equation}
+\noindent
+subject to
+
+\begin{equation}\label{pers25}
+    -\bar{x}_1 + \bar{x}_2 = \bar{1}
+\end{equation}
+\begin{equation}\label{pers26}
+    \bar{x}_1 + \bar{x}_2 \preceq \bar{2}
+\end{equation}
+
+\noindent with all variables are non-negative.
+
+According to the algorithm in Section \ref{alg}, the optimal solution of the fuzzy QPP is summarized in 3 steps as follows:
+\begin{description}
+  \item[Step 1] The determination of unconstrained minimum. For this problem we have
+      \begin{equation}
+        D = \left(
+          \begin{array}{cc}
+            2 & 0 \\
+            0 & 2 \\
+          \end{array}
+        \right), \quad c = (-4, 2)^T,~ \mbox{ and } q = 4,
+      \end{equation}
+       by using (\ref{pers6b}), we get $$\bar{x}^{(0)} = \bigg( \Big[\frac{\alpha +1}{2}, -\alpha + 2\Big], \Big[\frac{3\alpha +1}{2}, -\alpha +3\Big]\bigg)$$.
+  \item[Step 2] Test the feasibility of the $\bar{x}^{(0)}$. This can be done by substituting $\bar{x}^{(0)}$  to both of the constraints. Clearly, $\bar{x}^{(0)}$ violated constraint (\ref{pers26}). Therefore, we  are only focusing in finding the optimal solution on the constraint which is given by  equation (\ref{pers26}).
+  \item[Step 3] By choosing 2 points on (\ref{pers26}), usually the intersection of the line (\ref{pers26}) with the coordinates axis is chosen. It gives the constrained minimum with respect to (\ref{pers26}) as an active constraint and we denoted as $\bar{x}^*_{26}$ where
+      $$ \bar{x}_{26}^* = \bigg( \Big[\frac{1}{2}\frac{8\alpha^3 - 37\alpha^2 + 106\alpha - 73}{\alpha^2 + 2\alpha + 1}, -\frac{1}{2}\frac{4\alpha^3 - 21\alpha^2 +34\alpha - 21}{\alpha^2 + 2\alpha + 1}\Big],$$
+       $$\Big[ \frac{(\alpha - 2)(2\alpha^2 - 13\alpha + 5)}{(\alpha + 1)^2}, -\frac{(\alpha - 2)(3\alpha - 5)(2\alpha - 5)}{(\alpha + 1)^2}\Big] \bigg).$$
+\end{description}
+By using the feasibility test in Step 2, clearly the constrained minimum, $\bar{x}_{26}^*$ satisfies equation (\ref{pers25}) and (\ref{pers26}) or $\bar{x}_{26}^* \in F$. Then the optimal solution for the example is $\bar{x}_{26}^* = \bar{x}^*$.\\
+
+Now, at $ \alpha = 1$
+$$\bar{x}^* = (\frac{1}{2}, \frac{3}{2})$$
+
+\noindent as an optimal solution of the problem, and agreed with the solution that given by \cite{dav}.
+
+\section{Conclusion}
+A quadratic programming problems (QPP) is an optimization problem where the objective function is quadratic function and the constraints are linear functions. Many engineering problems can be represented as QPP, such as sensor network localization, principle component analysis and optimal power flow. That is, some performance metric is being optimized with subject to design limits. In this paper we solve the quadratic programming problem by using $\alpha$-cuts and constraints exploration approach. The fuzzy solution are characterized by fuzzy numbers, through the use of the concept of violation constraints by the fuzzy unconstrained and the optimal solution. By this approach, the fuzzy optimal solution of quadratic programming problem which is occurring in the real life situation can be easily obtained.
+
+
+\subsubsection*{Acknowledgement.}
+The authors would like to thank Center for Research and Innovation Management (CRIM), Center of Excellence, UTeM, UTeM's research grant PJP/2017/FKEKK/HI10/S01532 and Universiti Teknikal Malaysia Melaka (UTeM) for their encouragement and help in sponsoring this research.
+
+
+\begin{thebibliography}{4}
+
+%% \bibitem must have the following form:
+%%   \bibitem{key}...
+%%
+
+\bibitem{iby}
+    Ismail Bin Mohd and Yosza bin Dasril, Constraint exploration method for quadratic programming problem, \emph{J. Applied Mathematics and Computation}. Vol.112, pp.161-170, 2000.
+\bibitem{isy}
+    Ismail Bin Mohd dan Yosza, Cross-Product direction exploration approach for solving the quadratic programming problems, \emph{J. of Ultra Scientist of Physical Sciences}. Vol.12(2), pp.155-162, 2000.
+
+\bibitem{bose}
+    Bose S, Dennise F. G, K. Mani Chandy, \& S. H. Low, Solving Quadratically Constrained Quadratic Programs on Acyclic Graph with Application to Optimal Power Flow, \emph{IEEE Xplore: Proc. Annual Conference of Information Sciences and System (CISS)}, 19-21 March, NJ, USA, 2014.
+\bibitem{anto}
+    A. Antoniou, and L. Wu-Sheng, Practical Optimization, Algorithms \& Engineering Applications, Springer 2007.
+\bibitem{zad}
+    L. A. Zadeh, Fuzzy sets, \emph{Journal of Information and Control}, vol. 8, pp. 338 - 353, 1965.
+\bibitem{bel}
+    R.E Bellman and L.A Zadeh, Decision making in a fuzzy environment, \emph{J. of Management Science}, Vol.17, pp.141-164, 1970.
+\bibitem{Tan}
+    H. Tanaka, T. Okuda, and K. Asai, On fuzzy mathematical programming, \emph{J. of Cybernetics and System}, vol.3, pp.37-46, 1973.
+\bibitem{zim}
+    H. J Zimmerman, Fuzzy programming and linear programming with several objective functions, \emph{J. of Fuzzy Sets and System}, vol.1, pp.45-55, 1978.
+
+\bibitem{amm}
+    E. Ammar and H. A Khalifah, Fuzzy portfolio optimization a quadratic programming approach, \emph{J. of Chaos, Solitons and Fractals}, vol. 18, pp. 1045-1054,  2003.
+\bibitem{ism}
+    Ismail Bin Mohd and Yosza, A note on the violated constraints approach for solving the quadratic programming problem, \emph{J. of Ultra Scientist of Physical Sciences}.  Vol.10(2), pp.141-148, 1998.
+
+\bibitem{kau}
+    A. Kaufmann and M. M. Gupta, Introduction to fuzzy arithmetic: Theory and Applications, Van Nostrand Reinhold, New York, 1985.
+\bibitem{lio}
+    T. S Liou, M. J Wang, Ranking fuzzy numbers with integral value, \emph{J. of Fuzzy Sets and Systems}, vol. 50, pp. 247-255, 1992.
+\bibitem{jam}
+    J. J Buckley, E. Esfandiar, F Thomas, Fuzzy mathematics in economics and engineering, Physica-Verlag, 2002.
+\bibitem{zoh}
+    Zohany Q, Y. Zhang, G. Wany, Fuzzy random variable-valued exponential function, logarithmic function and power function, \emph{J. of Fuzzy Sets and Systems}, vol. 99, pp. 311-324, 1998.
+\bibitem{mal}
+    Maleki H.R, Tata M. Mashinchi M, Linear programming with fuzzy variables, \emph{J. of Fuzzy Sets and Systems}, vol. 109, pp. 1026-1092, 2000.
+\bibitem{dav}
+    D.A. Wismer and R. Chattergy, Introduction to Nonlinear Optimization, Noth-Holland Pub. Company, 1978.
+\end{thebibliography}
+
+
+\end{document}
+
+%%
+%% End of file `telkomnika.tex'. 
